@@ -3,11 +3,13 @@
 <html>
 
     <head>
-        <title>Coursework template</title>
+        <title>Final Coursework</title>
         <script type="text/javascript" src="../libs/three.js"></script>
         <script type="text/javascript" src="../libs/jquery-1.9.0.js"></script>
         <script type="text/javascript" src="../libs/stats.js"></script>
         <script type="text/javascript" src="../libs/dat.gui.js"></script>
+        <script type="text/javascript" src="../libs/keypress.js"></script>
+        <script type="text/javascript" src="../libs/TrackballControls.js"></script>
         <style>
             body{
                 /* set margin to 0 and overflow to hidden, to go fullscreen */
@@ -40,174 +42,1181 @@
 
                 // create a render and set the size
                 var renderer = new THREE.WebGLRenderer();
-                
-                var orbitGroup = new THREE.Object3D();
-                scene.add(orbitGroup);
-                orbitGroup.add(camera);
-                
-                var robotGroup = new THREE.Object3D();
-                scene.add(robotGroup);
-                robotGroup.add(camera);
-                
-             
-              
-                
-                var controls = new function(){
-                    this.height = camera.position.y;
-                    this.orbitAngle = 0;
-                    this.cameraAngle = 0;
-                    this.x = camera.position.x;
-                    this.z = camera.position.z;
-                };
-                
-                var gui = new dat.GUI();
-                gui.add(controls, 'x').listen();
-                gui.add(controls, 'height').listen();
-                gui.add(controls, 'z').listen();
-                gui.add(controls, 'orbitAngle').listen();
-                gui.add(controls, 'cameraAngle').listen();
 
                 renderer.setClearColor(0xEEEEEE, 1.0);
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.shadowMapEnabled = true;
-
-                // create the ground plane
-                var planeGeometry = new THREE.PlaneGeometry(60, 20);
-                var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-                var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-                plane.receiveShadow = true;
+ 
+             
+                
+                //lights
+                var spotLight = new THREE.SpotLight(0xffffff);
+                
+                
+                
+            
+                
+                
+                
+                //trackball settings
+                var controlcamera = new THREE.TrackballControls(camera);
+                controlcamera.rotateSpeed = 1.0; 
+                controlcamera.zoomSpeed = 1.0;
+                controlcamera.panSpeed = 1.0;
+                controlcamera.staticMoving = true;
+                controlcamera.dynamicDampingFactor = 0.3;
+          
+                 
+                //geometry groups
+                
+                var LegGroup = new THREE.Object3D();
+                var ArmGroup = new THREE.Object3D();
+                var JointsGroup = new THREE.Object3D();
+                var HandsGroup = new THREE.Object3D();
+                var MainBodyGroup = new THREE.Object3D();
+                var FootGroup = new THREE.Object3D();
+                //var PipeGroup = new THREE.Object3D();
+              
+              
+                //structure groups
+                var InnerGroup = new THREE.Object3D();
+                var OuterGroup = new THREE.Object3D();
+                var BaseGroup = new THREE.Object3D();
+                var AccessoryGroup = new THREE.Object3D();
+                var OverallGroup = new THREE.Object3D();
+                
+                
+                //light groups
+                var BodyLightGroups = new THREE.Object3D();
+             
+                // graphical user interface
+                var gui = new dat.GUI(); 
+                var guiMaterials = gui.addFolder("PhongMaterials");
+              
+                
+                    
+               
+                
+                
+                
+            
+                
+                
+   
+         
+                //external devices
+                var keypress = new window.keypress.Listener();  
+                
+                //intial camera position
+                var cameraX = camera.position.x = -40;
+                var cameraY = camera.position.y = 40;
+                var cameraZ = camera.position.z = 40;
+            
+            
+              
+                //array variables   
+                var m; // for main body
+                var a; // for arms
+                var j; // for joints
+                var L; // for upper legs
+                var l; // for lower legs
+                var h; // for hands
+                var f; // for feet
+                var o; // for ornaments
+                var p; // for body planes
+                
+                
+                
+                
+                //arrays for instantiation
+                var UpperLegs = [L];
+                var LowerLegs = [l];
+                var Joints = [j];
+                var OptimusMain = [m];
+                var Arms = [a];
+                var Hands = [h];
+                var Feet = [f];
+                var Ornaments = [o];
+                var Planes = [p];
+                
+                   
+                
+        
+                // geometry & material for the robot
+                var BodyGeometry = new THREE.CubeGeometry(1, 1, 1);
+                var BodyMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+                var MainBodyPhongMaterial = new THREE.MeshPhongMaterial({color: 0xff0000});
+                
+                var PelvisMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
+                var PelvisPhongMaterial = new THREE.MeshPhongMaterial({color: 0xCCCCCC});
+                
+                var UpperRobotLeg = new THREE.CubeGeometry(5,5,5);
+                var LowerRobotLeg = new THREE.CubeGeometry(5,5,5);
+                
+                var UpperLegMaterial = new THREE.MeshLambertMaterial({colour:0xCCCCCC});
+                var UpperLegPhongMaterial = new THREE.MeshPhongMaterial({colour:0xCCCCCC});
+                
+                
+                var LowerLegMaterial = new THREE.MeshLambertMaterial({colour:0x003399});
+                var LowerLegPhongMaterial = new THREE.MeshPhongMaterial({colour:0x003399});
+                
+                var JointGeometry = new THREE.SphereGeometry(1, 20, 20);
+                var JointMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+                var JointPhongMaterial = new THREE.MeshPhongMaterial({color: 0x7777ff});
+                
+                var ArmGeometry = new THREE.CubeGeometry(1,1,1);
+                var ArmMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+                var ArmPhongMaterial = new THREE.MeshPhongMaterial({color: 0xff0000});
+                
+                
+                var HandGeometry = new THREE.CubeGeometry(1,1,1);
+                var HandMaterial = new THREE.MeshLambertMaterial({color: 0x003399});
+                var HandPhongMaterial = new THREE.MeshPhongMaterial({color: 0x003399});
+             
+                var FeetGeometry = new THREE.CubeGeometry(1,1,1);
+                var FeetMaterial = new THREE.MeshLambertMaterial({color:0x003399});
+                var FeetPhongMaterial = new THREE.MeshPhongMaterial({color:0x003399});
+                
+                var OrnamentsGeometry = new THREE.CylinderGeometry(1, 1, 5);
+                var OrnamentsMaterial = new THREE.MeshLambertMaterial({color:0x003399});
+                var OrnamentsPhongMaterial = new THREE.MeshPhongMaterial({color:0x003399});
+                
+                var BodyPlaneGeometry = new THREE.PlaneGeometry(10, 10);
+                var BodyPlaneMaterial = new THREE.MeshLambertMaterial({color:0x003399});
+                var BodyPhongMaterial = new THREE.MeshPhongMaterial({color:0x003399});
                 
                 
         
+                
+                // create the ground plane
+                var planeGeometry = new THREE.PlaneGeometry(50, 50);
+                var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+                var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+                plane.receiveShadow = true;
 
                 // rotate and position the plane
                 plane.rotation.x = -0.5 * Math.PI;
                 plane.position.x = 15;
-
-                // add the plane to the scene
-                scene.add(plane);
-                {
-                // create a cube
-                var cubeGeometry1 = new THREE.CubeGeometry(4, 4, 4);
-                var cubeMaterial1 = new THREE.MeshLambertMaterial({color: 0xff0000});
-                var cube1 = new THREE.Mesh(cubeGeometry1, cubeMaterial1);
-                cube1.castShadow = true;
-
-                // position the cube
-                cube1.position.x = -1;
-                cube1.position.y = 3;
                 
-                   // create a cube
-                var cubeGeometry2 = new THREE.CubeGeometry(4, 4, 4);
-                var cubeMaterial2 = new THREE.MeshLambertMaterial({color: 0xff0000});
-                var cube2 = new THREE.Mesh(cubeGeometry2, cubeMaterial2);
-                cube2.castShadow = true;
-
-                // position the cube
-                cube2.position.x = -2;
-                cube2.position.y = 3;
                 
-                   // create a cube
-                var cubeGeometry3 = new THREE.CubeGeometry(4, 4, 4);
-                var cubeMaterial3 = new THREE.MeshLambertMaterial({color: 0xff0000});
-                var cube3 = new THREE.Mesh(cubeGeometry3, cubeMaterial3);
-                cube3.castShadow = true;
-
-                // position the cube
-                cube3.position.x = -6;
-                cube3.position.y = 3;
                 
-                   // create a cube
-                var cubeGeometry4 = new THREE.CubeGeometry(4, 4, 4);
-                var cubeMaterial4 = new THREE.MeshLambertMaterial({color: 0xff0000});
-                var cube4 = new THREE.Mesh(cubeGeometry4, cubeMaterial4);
-                cube4.castShadow = true;
-
-                // position the cube
-                cube4.position.x = 0;
-                cube4.position.y = 3;
                 
-            
-       
+                //following section is what is used to create the body
+                
+                //Main Body for the Robot
+                for (m = 0; m < 4; ++m){
+                
+                //var OptimusBody = new THREE.Mesh(BodyGeometry, BodyMaterial);
+                //OptimusBody.castShadow = true;
+          
+                
+               
+                //pelvis
+                if (m === 1){
+                    
+                OptimusMain[m] = new THREE.Mesh(BodyGeometry, PelvisPhongMaterial);
+                
+                 
+                 OptimusMain[m].position.x = 3;
+                 OptimusMain[m].position.y = 12;
+                 OptimusMain[m].position.z = 1;
+                 
+                 
+                 OptimusMain[m].scale.x = 3;
+                 OptimusMain[m].scale.y = 1.75;
+                 OptimusMain[m].scale.z = 7.50;
+                 
+                } 
+                
+                //body
+                if (m === 2){
+                    
+                    
+                 OptimusMain[m] = new THREE.Mesh(BodyGeometry, MainBodyPhongMaterial);
+                    
+                  OptimusMain[m].position.x = 3;
+                  OptimusMain[m].position.y = 15.5;
+                  OptimusMain[m].position.z = 1;
+                  
+                  OptimusMain[m].scale.x = 3;
+                  OptimusMain[m].scale.y = 6;
+                  OptimusMain[m].scale.z = 7.50;
                 }
-                // add the cube to the scene
-                scene.add(cube1);
-                scene.add(cube2);
-                scene.add(cube3);
-                scene.add(cube4);
+                
+                //head
+                if (m === 3){
+                    
+                    
+                  OptimusMain[m] = new THREE.Mesh(BodyGeometry, BodyPhongMaterial);
+                    
+                    
+                  OptimusMain[m].position.x = 3;
+                  OptimusMain[m].position.y = 19.5;
+                  OptimusMain[m].position.z = 1;
+                  
+                  OptimusMain[m].scale.x = 2;
+                  OptimusMain[m].scale.y = 2;
+                  OptimusMain[m].scale.z = 2;
+                    
+                }
+               MainBodyGroup.add(OptimusMain[m]);
+               
+       }
+       
+       
+                //Upper Legs for the Robot
+                for (L = 0; L < 3; L++){
+                  
+            
+                    //position & scale
+                    if(L === 1){ //leg1
+                        
+                UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial); 
+                UpperLegs[L].castShadow = true; 
+                        
+                        
+                        UpperLegs[L].position.x = 3;
+                        UpperLegs[L].position.y = 9;
+                        UpperLegs[L].position.z = -1.5;
+   
+                        
+                        //scale
+                        UpperLegs[L].scale.x = 0.50;
+                        UpperLegs[L].scale.y = 1;
+                        UpperLegs[L].scale.z = 0.50;
+                          
+                    }   
+                
+                    //position & scale
+                    if(L === 2){ //leg2
+                        
+                UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial); 
+                UpperLegs[L].castShadow = true; 
+                 
+                       
+                        UpperLegs[L].position.x = 3;
+                        UpperLegs[L].position.y = 9; 
+                        UpperLegs[L].position.z = 3.5;
+                       
+                       
+                       //scale
+                        UpperLegs[L].scale.x = 0.50;
+                        UpperLegs[L].scale.y = 1;
+                        UpperLegs[L].scale.z = 0.50;
+                        
+                    }
+                 
+                   
+                   LegGroup.add(UpperLegs[L]);
+                 
+                 
+                }
+                
+                      
+                //Lower Legs for the Robot
+                for(l = 0; l < 3; l++){
+                if (l === 1){
+                        
+                LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
+                LowerLegs[l].castShadow = true;
+                    
+                        
+                        LowerLegs[l].position.x = 3;
+                        LowerLegs[l].position.y = 2.5;
+                        LowerLegs[l].position.z = -1.5;
+                        
+                        
+                        //scale
+                        LowerLegs[l].scale.x = 0.70;
+                        LowerLegs[l].scale.y = 1;
+                        LowerLegs[l].scale.z = 0.70;
+                              
+                    }
+                    
+                    if(l === 2){
+                        
+                LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
+                LowerLegs[l].castShadow = true;
+                    
+                        
+                        LowerLegs[l].position.x = 3;
+                        LowerLegs[l].position.y = 2.5; 
+                        LowerLegs[l].position.z = 3.5;
+                        
+                        
+                        //scale
+                        LowerLegs[l].scale.x = 0.70;
+                        LowerLegs[l].scale.y = 1;
+                        LowerLegs[l].scale.z = 0.70;
+                    }
+                    
+                      LegGroup.add(LowerLegs[l]);
+                }
+                 
+                   
+                //Joints for the Robot
+                for (j = 0; j < 5; j++){
+                     
+              
+                    
+                    if(j === 1) {
+                       
+                       Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
+           
+                       Joints[j].position.x = 3;
+                       Joints[j].position.y = 5;
+                       Joints[j].position.z = 3.5;
+                   
+                       
+                       Joints[j].scale.x = 1.5;
+                       Joints[j].scale.y = 1.5;
+                       Joints[j].scale.z = 1.5;
+                        
+                       Joints[j].castShadow = true;
+                    
+                    }
+                    
+                    if(j === 2){
+                        
+                        Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
+                        
+                        Joints[j].position.x = 3;
+                        Joints[j].position.y = 5;
+                        Joints[j].position.z = -1.5;
+                        
+                        Joints[j].scale.x = 1.5;
+                        Joints[j].scale.y = 1.5;
+                        Joints[j].scale.z = 1.5;
+                        
+                        Joints[j].castShadow = true;
+                    }
+                    
+                    
+                    if(j === 3){
+                        
+                        Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
+                        
+                        Joints[j].position.x = 3;
+                        Joints[j].position.y = 14.2;
+                        Joints[j].position.z = -3.5;
+                        
+                        Joints[j].scale.x = 1.2;
+                        Joints[j].scale.y = 1.2;
+                        Joints[j].scale.z = 1.2;
+                        
+                        Joints[j].castShadow = true;
+                        
+                    }
+                    
+                    if(j === 4){
+                        
+                        Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
+                        
+                        Joints[j].position.x = 3;
+                        Joints[j].position.y = 14.2;
+                        Joints[j].position.z = 5.5;
+                        
+                        Joints[j].scale.x = 1.2;
+                        Joints[j].scale.y = 1.2;
+                        Joints[j].scale.z = 1.2
+                    }
+                    
+                    JointsGroup.add(Joints[j]);
+                  
+                
+                }
+                
+                //Arms for the Robot      
+                for (a = 0; a < 5; a++)
+                {
+              
+                     
+                     if(a === 1){
+                         
+                         Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
+                         Arms[a].castShadow = true;
+                         
+                         
+                         Arms[a].position.x = 3;
+                         Arms[a].position.y = 17;
+                         Arms[a].position.z = 5.5;
+                         
+                         Arms[a].scale.x = 2;
+                         Arms[a].scale.y = 3;
+                         Arms[a].scale.z = 2;
+                        
+                     }
+                     
+                     if(a === 2){
+                         
+                          Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
+                         
+                         Arms[a].position.x = 3;
+                         Arms[a].position.y = 12;
+                         Arms[a].position.z = 5.5;
+                         
+                         Arms[a].scale.x = 2;
+                         Arms[a].scale.y = 3;
+                         Arms[a].scale.z = 2;
+                     }
+                     
+                     if(a === 3){
+                         
+                          Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
+                         
+                         Arms[a].position.x = 3;
+                         Arms[a].position.y = 17;
+                         Arms[a].position.z = -3.5;
+                         
+                         Arms[a].scale.x = 2;
+                         Arms[a].scale.y = 3;
+                         Arms[a].scale.z = 2;
+                     }
+                     
+                     if(a === 4){
+                         
+                         Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
+                         
+                         Arms[a].position.x = 3;
+                         Arms[a].position.y = 12;
+                         Arms[a].position.z = -3.5;
+                         
+                         Arms[a].scale.x = 2;
+                         Arms[a].scale.y = 3;
+                         Arms[a].scale.z = 2;
+                     }
+                     
+                       ArmGroup.add(Arms[a]);
+                    
+                }
+                
+                //Hands
+                for (h = 0; h < 3; h++)
+                {
+                    if(h === 1){
+                      
+                     Hands[h] = new THREE.Mesh(HandGeometry, HandPhongMaterial); 
+                     Hands[h].castShadow;
+                     
+                     Hands[h].position.x = 3;
+                     Hands[h].position.y = 9.7;
+                     Hands[h].position.z = -3.5;
+                     
+                     
+                     Hands[h].scale.x = 1.5;
+                     Hands[h].scale.y = 1.5;
+                     Hands[h].scale.z = 1.5;
+                        
+                    }
+                    
+                    if(h === 2){
+                        
+                     Hands[h] = new THREE.Mesh(HandGeometry, HandMaterial);
+                     
+                     Hands[h].position.x = 3;
+                     Hands[h].position.y = 9.7;
+                     Hands[h].position.z = 5.5;
+                     
+                     Hands[h].scale.x = 1.5;
+                     Hands[h].scale.y = 1.5;
+                     Hands[h].scale.z = 1.5;
+                     
+                    }
+                    
+                    ArmGroup.add(Hands[h]);
+                }
+                
+                
+                //Feet
+                for (f = 0; f < 3; f++)
+                {
+                    if(f === 1)
+                    {
+                     
+                     Feet[f] = new THREE.Mesh(FeetGeometry, FeetPhongMaterial);
+                     
+                     Feet[f].position.x = 1.2;
+                     Feet[f].position.y = -0.65;
+                     Feet[f].position.z = 3.5;
+                     
+                     Feet[f].scale.x = 7;
+                     Feet[f].scale.y = 2;
+                     Feet[f].scale.z = 3.2;
+                        
+                        
+                    }
+                    
+                    if(f === 2)
+                    {
+                     
+                    Feet[f] = new THREE.Mesh(FeetGeometry, FeetMaterial)
+                        
+                     Feet[f].position.x = 1.2;
+                     Feet[f].position.y = -0.65;
+                     Feet[f].position.z = -1.6;
+                     
+                     Feet[f].scale.x = 7;
+                     Feet[f].scale.y = 2;
+                     Feet[f].scale.z = 3.2;
+                      
+                    }
+                    
+                    OuterGroup.add(Feet[f]);
+                };
+                
+                
+                //Ornaments
+                for (o = 0; o < 5; o++)
+                {
+                    if(o === 1)
+                    
+                    {
+                        
+                    Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
+                    
+                    Ornaments[o].position.x = 3;
+                    Ornaments[o].position.y = 19.2;
+                    Ornaments[o].position.z = 7;
+                    
+                    Ornaments[o].scale.x = 0.5;
+                    Ornaments[o].scale.y = 0.5;
+                    Ornaments[o].scale.z = 0.5;
+                   
+                    }
+                    
+                    if(o === 2)
+                    {
+                        
+                    Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
+                    
+                    Ornaments[o].position.x = 3;
+                    Ornaments[o].position.y = 19.2;
+                    Ornaments[o].position.z = -5.0;
+                    
+                    Ornaments[o].scale.x = 0.5;
+                    Ornaments[o].scale.y = 0.5;
+                    Ornaments[o].scale.z = 0.5;
+                        
+                    }
+                      
+                        
+                    if(o === 3)    
+                   {
+                
+                   Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
+                   
+                    Ornaments[o].position.x = 3;
+                    Ornaments[o].position.y = 23.0;
+                    Ornaments[o].position.z = 0.3;
+                    
+                    Ornaments[o].scale.x = 0.3;
+                    Ornaments[o].scale.y = 0.3;
+                    Ornaments[o].scale.z = 0.3;
+                    
+                   }
+                   
+                   if(o === 4)
+                   {
+                   
+                   Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
+                   
+                   
+                    Ornaments[o].position.x = 3;
+                    Ornaments[o].position.y = 23;
+                    Ornaments[o].position.z = 1.7;
+                    
+                    Ornaments[o].scale.x = 0.3;
+                    Ornaments[o].scale.y = 0.3;
+                    Ornaments[o].scale.z = 0.3;
+                       
+                   }
+                   
+                AccessoryGroup.add(Ornaments[o]);   
+        }
+                
+                
+                
+                //Planes
+                for (p = 0; p < 3; p++)
+                {
+                    
+                    
+                    if(p === 1)
+                    {
+                          Planes[p] = new THREE.Mesh(BodyPlaneGeometry, BodyPlaneMaterial);
+                          
+                          Planes[p].position.x = 1.22;
+                          Planes[p].position.y = 16;
+                          Planes[p].position.z = 2.9;
+                          
+                          Planes[p].scale.x = 0.325;
+                          Planes[p].scale.y = 0.325;
+                          Planes[p].rotation.y = -1.6;
+                          
+                          
+                        
+                    }
+                    
+                    if(p === 2){
+                        
+                          Planes[p] = new THREE.Mesh(BodyPlaneGeometry, BodyPlaneMaterial);
+                          
+                          Planes[p].position.x = 1.22;
+                          Planes[p].position.y = 16;
+                          Planes[p].position.z = -1;
+                          
+                          Planes[p].scale.x = 0.325;
+                          Planes[p].scale.y = 0.325;
+                          Planes[p].rotation.y = -1.6;
+                        
+                }
+                
+                MainBodyGroup.add(Planes[p]);
+            }
+                
+                scene.add(plane);
+                scene.add(JointsGroup);
+                scene.add(LegGroup);
+                scene.add(ArmGroup);
+                scene.add(MainBodyGroup);
+                scene.add(OverallGroup);
+                scene.add(BodyLightGroups);
+             
+         
+             
+             
+            var groups = new function() {
+             
+             
+             //inner core of the body
+             InnerGroup.add(LegGroup);
+             InnerGroup.add(ArmGroup);
+             InnerGroup.add(JointsGroup);
+             InnerGroup.add(MainBodyGroup);
+             
+             
+             //external features of the body
+             OuterGroup.add(HandsGroup);
+             OuterGroup.add(FootGroup);
+   
+            
+             
+             //main structure of the body
+             BaseGroup.add(OuterGroup);
+             BaseGroup.add(InnerGroup);
+           
+             
+             //final product
+             OverallGroup.add(BaseGroup);
+             OverallGroup.add(AccessoryGroup);
+             
 
-                var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-                var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-                var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+             BaseGroup.position.y = 2;
+             OverallGroup.position.y = 2;
+              
+    };
+                
+              
+                
+           
+                
 
-                // position the sphere
-                sphere.position.z = 2;
-                sphere.castShadow = true;
-
-                // add the sphere to the scene
-                scene.add(sphere);
-
-                // position and point the camera to the center of the scene
-                camera.position.x = -30;
-                camera.position.y = 40;
-                camera.position.z = 30;
-                camera.lookAt(scene.position);
-
-                // add subtle ambient lighting
+              
+              
+                
+           var Lighting  = new function(){
+                    
                 var ambientLight = new THREE.AmbientLight(0x0c0c0c);
                 scene.add(ambientLight);
 
                 // add spotlight for the shadows
-                var spotLight = new THREE.SpotLight(0xffffff);
+                
                 spotLight.position.set(-40, 60, -10);
                 spotLight.castShadow = true;
                 scene.add(spotLight);
 
+                }
+             
                 // add the output of the renderer to the html element
                 $("#WebGL-output").append(renderer.domElement);
 
-                var controls = new function() {
-                    this.rotationSpeed = 0.02;
-                    this.bouncingSpeed = 0.03;
+     
+                
+                
+                //var position = THREE.Vector3(cameraX, cameraY, cameraZ);
+                camera.lookAt(OverallGroup.position);
+            
+            
+            
+            
+         var initial = new function() {
+             
+                    
+              
+              
+          };
+                
+         var controls = new function() {
+              
+                    this.opacity = BodyPhongMaterial.opacity;
+                    this.transparent = BodyPhongMaterial.transparent;
+                    this.visible = BodyPhongMaterial.visible;
+                    this.color = BodyPhongMaterial.color.getHex();
+                    this.ambient = BodyPhongMaterial.ambient.getHex();
+                    this.emissive = BodyPhongMaterial.emissive.getHex();
+                    this.specular = BodyPhongMaterial.specular.getHex();
+                    this.shininess = BodyPhongMaterial.shininess;
+                    
+                    this.opacity = PelvisPhongMaterial.opacity;
+                    this.transparent = PelvisPhongMaterial.transparent;
+                    this.visible = PelvisPhongMaterial.visible;
+                    this.color = PelvisPhongMaterial.color.getHex();
+                    this.ambient = PelvisPhongMaterial.ambient.getHex();
+                    this.emissive = PelvisPhongMaterial.emissive.getHex();
+                    this.specular = PelvisPhongMaterial.specular.getHex();
+                    this.shininess = PelvisPhongMaterial.shininess;
+                   
+                    this.opacity = UpperLegPhongMaterial.opacity;
+                    this.transparent = UpperLegPhongMaterial.transparent;
+                    this.visible = UpperLegPhongMaterial.visible;
+                    this.color = UpperLegPhongMaterial.color.getHex();
+                    this.ambient = UpperLegPhongMaterial.ambient.getHex();
+                    this.emissive = UpperLegPhongMaterial.emissive.getHex();
+                    this.specular = UpperLegPhongMaterial.specular.getHex();
+                    this.shininess = UpperLegPhongMaterial.shininess;
+                    
+                    this.opacity = LowerLegPhongMaterial.opacity;
+                    this.transparent = LowerLegPhongMaterial.transparent;
+                    this.visible = LowerLegPhongMaterial.visible;
+                    this.color = LowerLegPhongMaterial.color.getHex();
+                    this.ambient = LowerLegPhongMaterial.ambient.getHex();
+                    this.emissive = LowerLegPhongMaterial.emissive.getHex();
+                    this.specular = LowerLegPhongMaterial.specular.getHex();
+                    this.shininess = LowerLegPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    this.opacity = JointPhongMaterial.opacity;
+                    this.transparent = JointPhongMaterial.transparent;
+                    this.visible = JointPhongMaterial.visible;
+                    this.color = JointPhongMaterial.color.getHex();
+                    this.ambient = JointPhongMaterial.ambient.getHex();
+                    this.emissive = JointPhongMaterial.emissive.getHex();
+                    this.specular = JointPhongMaterial.specular.getHex();
+                    this.shininess = JointPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    this.opacity = HandPhongMaterial.opacity;
+                    this.transparent = HandPhongMaterial.transparent;
+                    this.visible = HandPhongMaterial.visible;
+                    this.color = HandPhongMaterial.color.getHex();
+                    this.ambient = HandPhongMaterial.ambient.getHex();
+                    this.emissive = HandPhongMaterial.emissive.getHex();
+                    this.specular = HandPhongMaterial.specular.getHex();
+                    this.shininess = HandPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    
+                    this.opacity = PelvisPhongMaterial.opacity;
+                    this.transparent = PelvisPhongMaterial.transparent;
+                    this.visible = PelvisPhongMaterial.visible;
+                    this.color = PelvisPhongMaterial.color.getHex();
+                    this.ambient = PelvisPhongMaterial.ambient.getHex();
+                    this.emissive = PelvisPhongMaterial.emissive.getHex();
+                    this.specular = PelvisPhongMaterial.specular.getHex();
+                    this.shininess = PelvisPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    this.opacity = BodyPhongMaterial.opacity;
+                    this.transparent = BodyPhongMaterial.transparent;
+                    this.visible = BodyPhongMaterial.visible;
+                    this.color = BodyPhongMaterial.color.getHex();
+                    this.ambient = BodyPhongMaterial.ambient.getHex();
+                    this.emissive = BodyPhongMaterial.emissive.getHex();
+                    this.specular = BodyPhongMaterial.specular.getHex();
+                    this.shininess = BodyPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    this.opacity = FeetPhongMaterial.opacity;
+                    this.transparent = FeetPhongMaterial.transparent;
+                    this.visible = FeetPhongMaterial.visible;
+                    this.color = FeetPhongMaterial.color.getHex();
+                    this.ambient = FeetPhongMaterial.ambient.getHex();
+                    this.emissive = FeetPhongMaterial.emissive.getHex();
+                    this.specular = FeetPhongMaterial.specular.getHex();
+                    this.shininess = FeetPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                     this.opacity = OrnamentsPhongMaterial.opacity;
+                    this.transparent = OrnamentsPhongMaterial.transparent;
+                    this.visible = OrnamentsPhongMaterial.visible;
+                    this.color = OrnamentsPhongMaterial.color.getHex();
+                    this.ambient = OrnamentsPhongMaterial.ambient.getHex();
+                    this.emissive = OrnamentsPhongMaterial.emissive.getHex();
+                    this.specular = OrnamentsPhongMaterial.specular.getHex();
+                    this.shininess = OrnamentsPhongMaterial.shininess;
+                    this.side = "front";
+                    this.selectedMesh = "sphere";
+                    
+                    
+               
+                //camera.rotation.set(controls.rotateX, controls.rotateY, controls.rotateZ);
+                    
                 };
-
-                var gui = new dat.GUI();
-                gui.add(controls, 'rotationSpeed', 0, 0.5);
-                gui.add(controls, 'bouncingSpeed', 0, 0.5);
-
+                
+            
+          
+               
                 // call the render function
                 var angle = 0;
                 render();
+               
+               
+             
+                
+                var guiBodyMaterials = guiMaterials.addFolder("Main Body Materials");
+                var guiUpperLegMaterials = guiMaterials.addFolder("Upper Leg Materials");
+                var guiLowerLegMaterials = guiMaterials.addFolder("Lower Leg Materials");
+                var guiJointMaterials = guiMaterials.addFolder("Joint Materials");
+                var guiArmMaterials = guiMaterials.addFolder("Arm Materials");
+                
+               
+                
+                
+                
+    
 
+
+
+                guiBodyMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                    BodyPhongMaterial.opacity = e;
+                });
+                guiBodyMaterials.add(controls, 'transparent').onChange(function(e) {
+                    BodyPhongMaterial.transparent = e;
+                });
+                guiBodyMaterials.add(controls, 'visible').onChange(function(e) {
+                    BodyPhongMaterial.visible = e;
+                });
+                guiBodyMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                    BodyPhongMaterial.ambient = new THREE.Color(e);
+                });
+                guiBodyMaterials.add(controls, 'color').onChange(function(e) {
+                    BodyPhongMaterial.color = new THREE.Color(e);
+                });
+                guiBodyMaterials.add(controls, 'emissive').onChange(function(e) {
+                    BodyPhongMaterial.emissive = new THREE.Color(e);
+                });
+                guiBodyMaterials.add(controls, 'specular').onChange(function(e) {
+                    BodyPhongMaterial.specular = new THREE.Color(e);
+                });
+                guiBodyMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                    BodyPhongMaterial.shininess = e;
+                });
+                
+                guiBodyMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                    switch (e) {
+                        case "front":
+                            BodyPhongMaterial.side = THREE.FrontSide;
+                            break;
+                        case "back":
+                            BodyPhongMaterial.side = THREE.BackSide;
+                            break;
+                        case "double":
+                            BodyPhongMaterial.side = THREE.DoubleSide;
+                            break;
+                    }
+                    BodyPhongMaterial.needsUpdate = true;
+                });
+                
+                
+                
+                guiUpperLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                    UpperLegPhongMaterial.opacity = e;
+                });
+                guiUpperLegMaterials.add(controls, 'transparent').onChange(function(e) {
+                    UpperLegPhongMaterial.transparent = e;
+                });
+                guiUpperLegMaterials.add(controls, 'visible').onChange(function(e) {
+                    UpperLegPhongMaterial.visible = e;
+                });
+                guiUpperLegMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                    UpperLegPhongMaterial.ambient = new THREE.Color(e);
+                });
+                guiUpperLegMaterials.add(controls, 'color').onChange(function(e) {
+                    UpperLegPhongMaterial.color = new THREE.Color(e);
+                });
+                guiUpperLegMaterials.add(controls, 'emissive').onChange(function(e) {
+                    UpperLegPhongMaterial.emissive = new THREE.Color(e);
+                });
+                guiUpperLegMaterials.add(controls, 'specular').onChange(function(e) {
+                    UpperLegPhongMaterial.specular = new THREE.Color(e);
+                });
+                guiUpperLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                    UpperLegPhongMaterial.shininess = e;
+                });
+                
+                guiUpperLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                    switch (e) {
+                        case "front":
+                            UpperLegPhongMaterial.side = THREE.FrontSide;
+                            break;
+                        case "back":
+                            UpperLegPhongMaterial.side = THREE.BackSide;
+                            break;
+                        case "double":
+                            UpperLegPhongMaterial.side = THREE.DoubleSide;
+                            break;
+                    }
+                    UpperLegPhongMaterial.needsUpdate = true;
+                });
+                
+                guiLowerLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                    LowerLegPhongMaterial.opacity = e;
+                });
+                guiLowerLegMaterials.add(controls, 'transparent').onChange(function(e) {
+                    LowerLegPhongMaterial.transparent = e;
+                });
+                guiLowerLegMaterials.add(controls, 'visible').onChange(function(e) {
+                    LowerLegPhongMaterial.visible = e;
+                });
+                guiLowerLegMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                    LowerLegPhongMaterial.ambient = new THREE.Color(e);
+                });
+                guiLowerLegMaterials.add(controls, 'color').onChange(function(e) {
+                    LowerLegPhongMaterial.color = new THREE.Color(e);
+                });
+                guiLowerLegMaterials.add(controls, 'emissive').onChange(function(e) {
+                    LowerLegPhongMaterial.emissive = new THREE.Color(e);
+                });
+                guiLowerLegMaterials.add(controls, 'specular').onChange(function(e) {
+                    LowerLegPhongMaterial.specular = new THREE.Color(e);
+                });
+                guiLowerLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                    LowerLegPhongMaterial.shininess = e;
+                });
+                
+                guiLowerLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                    switch (e) {
+                        case "front":
+                            LowerLegPhongMaterial.side = THREE.FrontSide;
+                            break;
+                        case "back":
+                            LowerLegPhongMaterial.side = THREE.BackSide;
+                            break;
+                        case "double":
+                            LowerLegPhongMaterial.side = THREE.DoubleSide;
+                            break;
+                    }
+                    LowerLegPhongMaterial.needsUpdate = true;
+                });
+                
+                
+                guiJointMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                    JointPhongMaterial.opacity = e;
+                });
+                guiJointMaterials.add(controls, 'transparent').onChange(function(e) {
+                    JointPhongMaterial.transparent = e;
+                });
+                guiJointMaterials.add(controls, 'visible').onChange(function(e) {
+                    JointPhongMaterial.visible = e;
+                });
+                guiJointMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                    JointPhongMaterial.ambient = new THREE.Color(e);
+                });
+                guiJointMaterials.add(controls, 'color').onChange(function(e) {
+                    JointPhongMaterial.color = new THREE.Color(e);
+                });
+                guiJointMaterials.add(controls, 'emissive').onChange(function(e) {
+                    JointPhongMaterial.emissive = new THREE.Color(e);
+                });
+                guiJointMaterials.add(controls, 'specular').onChange(function(e) {
+                    JointPhongMaterial.specular = new THREE.Color(e);
+                });
+                guiJointMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                    JointPhongMaterial.shininess = e;
+                });
+                
+                guiJointMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                    switch (e) {
+                        case "front":
+                            JointPhongMaterial.side = THREE.FrontSide;
+                            break;
+                        case "back":
+                            JointPhongMaterial.side = THREE.BackSide;
+                            break;
+                        case "double":
+                            JointPhongMaterial.side = THREE.DoubleSide;
+                            break;
+                    }
+                    JointPhongMaterial.needsUpdate = true;
+                });
+                guiArmMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                    ArmPhongMaterial.opacity = e;
+                });
+                guiArmMaterials.add(controls, 'transparent').onChange(function(e) {
+                    ArmPhongMaterial.transparent = e;
+                });
+                guiArmMaterials.add(controls, 'visible').onChange(function(e) {
+                    ArmPhongMaterial.visible = e;
+                });
+                guiArmMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                    ArmPhongMaterial.ambient = new THREE.Color(e);
+                });
+                guiArmMaterials.add(controls, 'color').onChange(function(e) {
+                    ArmPhongMaterial.color = new THREE.Color(e);
+                });
+                guiArmMaterials.add(controls, 'emissive').onChange(function(e) {
+                    ArmPhongMaterial.emissive = new THREE.Color(e);
+                });
+                guiArmMaterials.add(controls, 'specular').onChange(function(e) {
+                    ArmPhongMaterial.specular = new THREE.Color(e);
+                });
+                guiArmMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                    ArmPhongMaterial.shininess = e;
+                });
+                
+                guiArmMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                    switch (e) {
+                        case "front":
+                            ArmPhongMaterial.side = THREE.FrontSide;
+                            break;
+                        case "back":
+                            ArmPhongMaterial.side = THREE.BackSide;
+                            break;
+                        case "double":
+                            ArmPhongMaterial.side = THREE.DoubleSide;
+                            break;
+                    }
+                    ArmPhongMaterial.needsUpdate = true;
+                });
+     
                 function render() {
-                    stats.update();
-                    // rotate the cube around its axes
-                    cube1.rotation.x += controls.rotationSpeed;
-                    cube1.rotation.y += controls.rotationSpeed;
-                    cube1.rotation.z += controls.rotationSpeed;
-                    
-                    cube2.rotation.x += controls.rotationSpeed;
-                    cube2.rotation.y += controls.rotationSpeed;
-                    cube2.rotation.z += controls.rotationSpeed;
-                    
-                    cube3.rotation.x += controls.rotationSpeed;
-                    cube3.rotation.y += controls.rotationSpeed;
-                    cube3.rotation.z += controls.rotationSpeed;
-                    
-                    cube4.rotation.x += controls.rotationSpeed;
-                    cube4.rotation.y += controls.rotationSpeed;
-                    cube4.rotation.z += controls.rotationSpeed;
-
-                    // bounce the sphere up and down
-                    angle += controls.bouncingSpeed;
-                    sphere.position.x = 20 + (10 * (Math.cos(angle)));
-                    sphere.position.y = 2 + (10 * Math.abs(Math.sin(angle)));
-
+                 stats.update();
+                 var clock = new THREE.Clock();
+                 var delta = clock.getDelta();
+                 controlcamera.update(delta);
+                 
+                 
+                
                     // render using requestAnimationFrame
                     requestAnimationFrame(render);
                     renderer.render(scene, camera);
                 }
-
+                
+                
+                
+               
+                
+                
+                
+                
+    
+                var keyboard = new function() {
+                
+                
+                //turn left
+                keypress.simple_combo("left", function(){
+                   
+                   //robotGroup.position.x -=1;
+                   OverallGroup.rotation.y -=0.5;
+                 
+        
+                });
+                
+                
+                //turn right
+                keypress.simple_combo("right", function(){
+                
+                   //robotGroup.position.x +=1;
+                   OverallGroup.rotation.y +=0.5;
+               
+                });
+                
+                keypress.simple_combo("up", function(){
+                    
+                 OverallGroup.rotation.y +=0.5;  
+                 OverallGroup.position.x += 1;
+                 
+        
+                });
+                
+                keypress.simple_combo("down", function(){
+                 
+                   OverallGroup.rotation.y -=0.5;
+                   OverallGroup.position.x -= 1;
+                    
+                });
+                
+                
+                //a jump function
+                keypress.simple_combo("space", function(){
+                    
+                    //robotGroup.position.y +=1;
+                    
+                });
+                
+                
+                //corekeyboard functions
+                
+                //up
+                keypress.simple_combo("w", function (){
+                    camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
+                    camera.position.z -= 0.5 * Math.cos(camera.rotation.y);
+                });
+                
+                
+                keypress.simple_combo("a", function(){
+                    camera.rotation.y += 0.02;
+                });
+                
+                 //down
+               
+                keypress.simple_combo("s", function() {
+                    camera.position.x += 0.1 * Math.sin(camera.rotation.y);
+                    camera.position.z += 0.1 * Math.cos(camera.rotation.y);
+                });
+                
+                
+                keypress.simple_combo("d", function() {
+                    
+                      //right
+                     camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
+                     camera.position.z -= 0.5 * Math.cos(camera.position.y);
+                     
+                    //camera.rotation.y -= 0.02;
+                });
+                
+                
+                //zoom out
+                keypress.simple_combo("q", function() {
+                         //left
+                camera.position.x += 0.5 * Math.sin(camera.rotation.y);
+                camera.position.y += 0.5 * Math.cos(camera.rotation.x);
+                camera.position.z += 0.5 * Math.cos(camera.rotation.z);
+                   
+                });
+                
+                keypress.simple_combo("e", function() {
+                    
+                camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
+                camera.position.y -= 0.5 * Math.cos(camera.rotation.x);
+                camera.position.y -= 0.5 * Math.cos(camera.rotation.z);
+                    
+                });
+                
+             
+    }
+    
+    
+                var mouse = new function() {
+                    
+                };
+           
                 function initStats() {
 
                     var stats = new Stats();
@@ -223,10 +1232,6 @@
 
                     return stats;
                 }
-                
-                
-                
-                
             });
 
         </script>
