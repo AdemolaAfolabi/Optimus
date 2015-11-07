@@ -47,17 +47,11 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.shadowMapEnabled = true;
  
-             
-                
+
                 //lights
                 var spotLight = new THREE.SpotLight(0xffffff);
                 
-                
-                
-            
-                
-                
-                
+        
                 //trackball settings
                 var controlcamera = new THREE.TrackballControls(camera);
                 controlcamera.rotateSpeed = 1.0; 
@@ -92,18 +86,7 @@
                 // graphical user interface
                 var gui = new dat.GUI(); 
                 var guiMaterials = gui.addFolder("PhongMaterials");
-              
-                
-                    
-               
-                
-                
-                
-            
-                
-                
-   
-         
+             
                 //external devices
                 var keypress = new window.keypress.Listener();  
                 
@@ -111,8 +94,7 @@
                 var cameraX = camera.position.x = -40;
                 var cameraY = camera.position.y = 40;
                 var cameraZ = camera.position.z = 40;
-            
-            
+        
               
                 //array variables   
                 var m; // for main body
@@ -748,13 +730,7 @@
             
             
             
-            
-         var initial = new function() {
-             
-                    
-              
-              
-          };
+   
                 
          var controls = new function() {
               
