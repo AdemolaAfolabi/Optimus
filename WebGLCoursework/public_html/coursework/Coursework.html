@@ -47,11 +47,9 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.shadowMapEnabled = true;
  
-
                 //lights
                 var spotLight = new THREE.SpotLight(0xffffff);
                 
-        
                 //trackball settings
                 var controlcamera = new THREE.TrackballControls(camera);
                 controlcamera.rotateSpeed = 1.0; 
@@ -60,7 +58,6 @@
                 controlcamera.staticMoving = true;
                 controlcamera.dynamicDampingFactor = 0.3;
           
-                 
                 //geometry groups
                 
                 var LegGroup = new THREE.Object3D();
@@ -71,14 +68,12 @@
                 var FootGroup = new THREE.Object3D();
                 //var PipeGroup = new THREE.Object3D();
               
-              
                 //structure groups
                 var InnerGroup = new THREE.Object3D();
                 var OuterGroup = new THREE.Object3D();
                 var BaseGroup = new THREE.Object3D();
                 var AccessoryGroup = new THREE.Object3D();
                 var OverallGroup = new THREE.Object3D();
-                
                 
                 //light groups
                 var BodyLightGroups = new THREE.Object3D();
@@ -107,9 +102,6 @@
                 var o; // for ornaments
                 var p; // for body planes
                 
-                
-                
-                
                 //arrays for instantiation
                 var UpperLegs = [L];
                 var LowerLegs = [l];
@@ -121,9 +113,7 @@
                 var Ornaments = [o];
                 var Planes = [p];
                 
-                   
-                
-        
+                  
                 // geometry & material for the robot
                 var BodyGeometry = new THREE.CubeGeometry(1, 1, 1);
                 var BodyMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
@@ -138,7 +128,6 @@
                 var UpperLegMaterial = new THREE.MeshLambertMaterial({colour:0xCCCCCC});
                 var UpperLegPhongMaterial = new THREE.MeshPhongMaterial({colour:0xCCCCCC});
                 
-                
                 var LowerLegMaterial = new THREE.MeshLambertMaterial({colour:0x003399});
                 var LowerLegPhongMaterial = new THREE.MeshPhongMaterial({colour:0x003399});
                 
@@ -149,7 +138,6 @@
                 var ArmGeometry = new THREE.CubeGeometry(1,1,1);
                 var ArmMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
                 var ArmPhongMaterial = new THREE.MeshPhongMaterial({color: 0xff0000});
-                
                 
                 var HandGeometry = new THREE.CubeGeometry(1,1,1);
                 var HandMaterial = new THREE.MeshLambertMaterial({color: 0x003399});
@@ -167,9 +155,6 @@
                 var BodyPlaneMaterial = new THREE.MeshLambertMaterial({color:0x003399});
                 var BodyPhongMaterial = new THREE.MeshPhongMaterial({color:0x003399});
                 
-                
-        
-                
                 // create the ground plane
                 var planeGeometry = new THREE.PlaneGeometry(50, 50);
                 var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
@@ -180,9 +165,6 @@
                 plane.rotation.x = -0.5 * Math.PI;
                 plane.position.x = 15;
                 
-                
-                
-                
                 //following section is what is used to create the body
                 
                 //Main Body for the Robot
@@ -191,38 +173,36 @@
                 //var OptimusBody = new THREE.Mesh(BodyGeometry, BodyMaterial);
                 //OptimusBody.castShadow = true;
           
-                
-               
                 //pelvis
                 if (m === 1){
                     
                 OptimusMain[m] = new THREE.Mesh(BodyGeometry, PelvisPhongMaterial);
                 
                  
-                 OptimusMain[m].position.x = 3;
-                 OptimusMain[m].position.y = 12;
-                 OptimusMain[m].position.z = 1;
+                OptimusMain[m].position.x = 3;
+                OptimusMain[m].position.y = 12;
+                OptimusMain[m].position.z = 1;
                  
-                 
-                 OptimusMain[m].scale.x = 3;
-                 OptimusMain[m].scale.y = 1.75;
-                 OptimusMain[m].scale.z = 7.50;
+                OptimusMain[m].scale.x = 3;
+                OptimusMain[m].scale.y = 1.75;
+                OptimusMain[m].scale.z = 7.50;
                  
                 } 
                 
                 //body
-                if (m === 2){
-                    
+                if (m === 2)
+                {
                     
                  OptimusMain[m] = new THREE.Mesh(BodyGeometry, MainBodyPhongMaterial);
                     
-                  OptimusMain[m].position.x = 3;
-                  OptimusMain[m].position.y = 15.5;
-                  OptimusMain[m].position.z = 1;
+                 OptimusMain[m].position.x = 3;
+                 OptimusMain[m].position.y = 15.5;
+                 OptimusMain[m].position.z = 1;
                   
-                  OptimusMain[m].scale.x = 3;
-                  OptimusMain[m].scale.y = 6;
-                  OptimusMain[m].scale.z = 7.50;
+                 OptimusMain[m].scale.x = 3;
+                 OptimusMain[m].scale.y = 6;
+                 OptimusMain[m].scale.z = 7.50;
+                 
                 }
                 
                 //head
