@@ -11,7 +11,8 @@
         <script type="text/javascript" src="../libs/keypress.js"></script>
         <script type="text/javascript" src="../libs/TrackballControls.js"></script>
         <style>
-            body{
+            body
+            {
                 /* set margin to 0 and overflow to hidden, to go fullscreen */
                 margin: 0;
                 overflow: hidden;
@@ -30,8 +31,8 @@
         <script type="text/javascript">
 
             // once everything is loaded, we run our Three.js stuff.
-            $(function() {
-
+            $(function()
+            {
                 var stats = initStats();
 
                 // create a scene, that will hold all our elements such as objects, cameras and lights.
@@ -59,7 +60,6 @@
                 controlcamera.dynamicDampingFactor = 0.3;
           
                 //geometry groups
-                
                 var LegGroup = new THREE.Object3D();
                 var ArmGroup = new THREE.Object3D();
                 var JointsGroup = new THREE.Object3D();
@@ -206,12 +206,11 @@
                 }
                 
                 //head
-                if (m === 3){
-                    
-                    
+                if (m === 3)
+                {
+
                   OptimusMain[m] = new THREE.Mesh(BodyGeometry, BodyPhongMaterial);
-                    
-                    
+
                   OptimusMain[m].position.x = 3;
                   OptimusMain[m].position.y = 19.5;
                   OptimusMain[m].position.z = 1;
@@ -221,73 +220,67 @@
                   OptimusMain[m].scale.z = 2;
                     
                 }
+
                MainBodyGroup.add(OptimusMain[m]);
                
-       }
+            }
        
        
                 //Upper Legs for the Robot
-                for (L = 0; L < 3; L++){
-                  
-            
+                for (L = 0; L < 3; L++)
+                {
                     //position & scale
-                    if(L === 1){ //leg1
+                    if(L === 1)
+                    { //leg1
                         
-                UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial); 
-                UpperLegs[L].castShadow = true; 
-                        
-                        
+                        UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial);
+                        UpperLegs[L].castShadow = true;
+
                         UpperLegs[L].position.x = 3;
                         UpperLegs[L].position.y = 9;
                         UpperLegs[L].position.z = -1.5;
-   
-                        
+
                         //scale
                         UpperLegs[L].scale.x = 0.50;
                         UpperLegs[L].scale.y = 1;
                         UpperLegs[L].scale.z = 0.50;
-                          
                     }   
                 
                     //position & scale
-                    if(L === 2){ //leg2
+                    if(L === 2)
+                    { //leg2
                         
-                UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial); 
-                UpperLegs[L].castShadow = true; 
-                 
-                       
+                        UpperLegs[L] = new THREE.Mesh(UpperRobotLeg, UpperLegPhongMaterial);
+                        UpperLegs[L].castShadow = true;
+
                         UpperLegs[L].position.x = 3;
                         UpperLegs[L].position.y = 9; 
                         UpperLegs[L].position.z = 3.5;
-                       
-                       
+
                        //scale
                         UpperLegs[L].scale.x = 0.50;
                         UpperLegs[L].scale.y = 1;
                         UpperLegs[L].scale.z = 0.50;
                         
                     }
-                 
-                   
+
                    LegGroup.add(UpperLegs[L]);
-                 
-                 
                 }
                 
                       
                 //Lower Legs for the Robot
-                for(l = 0; l < 3; l++){
-                if (l === 1){
+                for(l = 0; l < 3; l++)
+                {
+                    if (l === 1)
+                    {
                         
-                LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
-                LowerLegs[l].castShadow = true;
-                    
-                        
+                        LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
+                        LowerLegs[l].castShadow = true;
+
                         LowerLegs[l].position.x = 3;
                         LowerLegs[l].position.y = 2.5;
                         LowerLegs[l].position.z = -1.5;
-                        
-                        
+
                         //scale
                         LowerLegs[l].scale.x = 0.70;
                         LowerLegs[l].scale.y = 1;
@@ -295,16 +288,14 @@
                               
                     }
                     
-                    if(l === 2){
-                        
-                LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
-                LowerLegs[l].castShadow = true;
-                    
-                        
+                    if(l === 2)
+                    {
+                        LowerLegs[l] = new THREE.Mesh(LowerRobotLeg, LowerLegPhongMaterial);
+                        LowerLegs[l].castShadow = true;
+
                         LowerLegs[l].position.x = 3;
                         LowerLegs[l].position.y = 2.5; 
                         LowerLegs[l].position.z = 3.5;
-                        
                         
                         //scale
                         LowerLegs[l].scale.x = 0.70;
@@ -317,11 +308,11 @@
                  
                    
                 //Joints for the Robot
-                for (j = 0; j < 5; j++){
-                     
-              
+                for (j = 0; j < 5; j++)
+                {
                     
-                    if(j === 1) {
+                    if (j === 1)
+                    {
                        
                        Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
            
@@ -337,9 +328,9 @@
                        Joints[j].castShadow = true;
                     
                     }
-                    
-                    if(j === 2){
-                        
+
+                    if (j === 2)
+                    {
                         Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
                         
                         Joints[j].position.x = 3;
@@ -354,8 +345,8 @@
                     }
                     
                     
-                    if(j === 3){
-                        
+                    if (j === 3)
+                    {
                         Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
                         
                         Joints[j].position.x = 3;
@@ -367,11 +358,10 @@
                         Joints[j].scale.z = 1.2;
                         
                         Joints[j].castShadow = true;
-                        
                     }
                     
-                    if(j === 4){
-                        
+                    if (j === 4)
+                    {
                         Joints[j] = new THREE.Mesh(JointGeometry, JointPhongMaterial);
                         
                         Joints[j].position.x = 3;
@@ -384,20 +374,17 @@
                     }
                     
                     JointsGroup.add(Joints[j]);
-                  
-                
+
                 }
                 
                 //Arms for the Robot      
                 for (a = 0; a < 5; a++)
                 {
-              
                      
-                     if(a === 1){
-                         
+                     if (a === 1)
+                     {
                          Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
                          Arms[a].castShadow = true;
-                         
                          
                          Arms[a].position.x = 3;
                          Arms[a].position.y = 17;
@@ -406,11 +393,10 @@
                          Arms[a].scale.x = 2;
                          Arms[a].scale.y = 3;
                          Arms[a].scale.z = 2;
-                        
                      }
                      
-                     if(a === 2){
-                         
+                     if(a === 2)
+                     {
                           Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
                          
                          Arms[a].position.x = 3;
@@ -422,8 +408,8 @@
                          Arms[a].scale.z = 2;
                      }
                      
-                     if(a === 3){
-                         
+                     if(a === 3)
+                     {
                           Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
                          
                          Arms[a].position.x = 3;
@@ -435,8 +421,8 @@
                          Arms[a].scale.z = 2;
                      }
                      
-                     if(a === 4){
-                         
+                     if(a === 4)
+                     {
                          Arms[a] = new THREE.Mesh(ArmGeometry, ArmPhongMaterial);
                          
                          Arms[a].position.x = 3;
@@ -463,15 +449,15 @@
                      Hands[h].position.x = 3;
                      Hands[h].position.y = 9.7;
                      Hands[h].position.z = -3.5;
-                     
-                     
+
                      Hands[h].scale.x = 1.5;
                      Hands[h].scale.y = 1.5;
                      Hands[h].scale.z = 1.5;
                         
                     }
                     
-                    if(h === 2){
+                    if(h === 2)
+                    {
                         
                      Hands[h] = new THREE.Mesh(HandGeometry, HandMaterial);
                      
@@ -504,14 +490,13 @@
                      Feet[f].scale.x = 7;
                      Feet[f].scale.y = 2;
                      Feet[f].scale.z = 3.2;
-                        
-                        
+
                     }
                     
                     if(f === 2)
                     {
                      
-                    Feet[f] = new THREE.Mesh(FeetGeometry, FeetMaterial)
+                     Feet[f] = new THREE.Mesh(FeetGeometry, FeetMaterial)
                         
                      Feet[f].position.x = 1.2;
                      Feet[f].position.y = -0.65;
@@ -531,7 +516,6 @@
                 for (o = 0; o < 5; o++)
                 {
                     if(o === 1)
-                    
                     {
                         
                     Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
@@ -560,12 +544,11 @@
                     Ornaments[o].scale.z = 0.5;
                         
                     }
-                      
-                        
+
                     if(o === 3)    
-                   {
+                    {
                 
-                   Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
+                    Ornaments[o] = new THREE.Mesh(OrnamentsGeometry, OrnamentsMaterial);
                    
                     Ornaments[o].position.x = 3;
                     Ornaments[o].position.y = 23.0;
@@ -575,7 +558,7 @@
                     Ornaments[o].scale.y = 0.3;
                     Ornaments[o].scale.z = 0.3;
                     
-                   }
+                    }
                    
                    if(o === 4)
                    {
@@ -593,17 +576,15 @@
                        
                    }
                    
-                AccessoryGroup.add(Ornaments[o]);   
-        }
+                    AccessoryGroup.add(Ornaments[o]);
+                }
                 
                 
                 
                 //Planes
                 for (p = 0; p < 3; p++)
                 {
-                    
-                    
-                    if(p === 1)
+                    if (p === 1)
                     {
                           Planes[p] = new THREE.Mesh(BodyPlaneGeometry, BodyPlaneMaterial);
                           
@@ -614,12 +595,10 @@
                           Planes[p].scale.x = 0.325;
                           Planes[p].scale.y = 0.325;
                           Planes[p].rotation.y = -1.6;
-                          
-                          
-                        
                     }
                     
-                    if(p === 2){
+                    if (p === 2)
+                    {
                         
                           Planes[p] = new THREE.Mesh(BodyPlaneGeometry, BodyPlaneMaterial);
                           
@@ -630,8 +609,7 @@
                           Planes[p].scale.x = 0.325;
                           Planes[p].scale.y = 0.325;
                           Planes[p].rotation.y = -1.6;
-                        
-                }
+                    }
                 
                 MainBodyGroup.add(Planes[p]);
             }
@@ -643,13 +621,11 @@
                 scene.add(MainBodyGroup);
                 scene.add(OverallGroup);
                 scene.add(BodyLightGroups);
+
              
-         
-             
-             
-            var groups = new function() {
-             
-             
+            var groups = new function()
+            {
+
              //inner core of the body
              InnerGroup.add(LegGroup);
              InnerGroup.add(ArmGroup);
@@ -660,34 +636,23 @@
              //external features of the body
              OuterGroup.add(HandsGroup);
              OuterGroup.add(FootGroup);
-   
-            
-             
+
              //main structure of the body
              BaseGroup.add(OuterGroup);
              BaseGroup.add(InnerGroup);
-           
-             
+
              //final product
              OverallGroup.add(BaseGroup);
              OverallGroup.add(AccessoryGroup);
-             
 
              BaseGroup.position.y = 2;
              OverallGroup.position.y = 2;
               
-    };
-                
-              
-                
-           
-                
+            };
 
-              
-              
                 
-           var Lighting  = new function(){
-                    
+           var Lighting  = new function()
+           {
                 var ambientLight = new THREE.AmbientLight(0x0c0c0c);
                 scene.add(ambientLight);
 
@@ -696,23 +661,18 @@
                 spotLight.position.set(-40, 60, -10);
                 spotLight.castShadow = true;
                 scene.add(spotLight);
-
-                }
+           }
              
                 // add the output of the renderer to the html element
                 $("#WebGL-output").append(renderer.domElement);
 
-     
-                
                 
                 //var position = THREE.Vector3(cameraX, cameraY, cameraZ);
                 camera.lookAt(OverallGroup.position);
-            
-            
-            
-   
+
                 
-         var controls = new function() {
+         var controls = new function()
+         {
               
                     this.opacity = BodyPhongMaterial.opacity;
                     this.transparent = BodyPhongMaterial.transparent;
@@ -808,7 +768,7 @@
                     this.side = "front";
                     this.selectedMesh = "sphere";
                     
-                     this.opacity = OrnamentsPhongMaterial.opacity;
+                    this.opacity = OrnamentsPhongMaterial.opacity;
                     this.transparent = OrnamentsPhongMaterial.transparent;
                     this.visible = OrnamentsPhongMaterial.visible;
                     this.color = OrnamentsPhongMaterial.color.getHex();
@@ -819,62 +779,56 @@
                     this.side = "front";
                     this.selectedMesh = "sphere";
                     
-                    
-               
-                //camera.rotation.set(controls.rotateX, controls.rotateY, controls.rotateZ);
-                    
                 };
-                
-            
-          
+
                
                 // call the render function
                 var angle = 0;
                 render();
-               
-               
-             
+
                 
                 var guiBodyMaterials = guiMaterials.addFolder("Main Body Materials");
                 var guiUpperLegMaterials = guiMaterials.addFolder("Upper Leg Materials");
                 var guiLowerLegMaterials = guiMaterials.addFolder("Lower Leg Materials");
                 var guiJointMaterials = guiMaterials.addFolder("Joint Materials");
                 var guiArmMaterials = guiMaterials.addFolder("Arm Materials");
-                
-               
-                
-                
-                
-    
 
 
-
-                guiBodyMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                guiBodyMaterials.add(controls, 'opacity', 0, 1).onChange(function(e)
+                {
                     BodyPhongMaterial.opacity = e;
                 });
-                guiBodyMaterials.add(controls, 'transparent').onChange(function(e) {
+                guiBodyMaterials.add(controls, 'transparent').onChange(function(e)
+                {
                     BodyPhongMaterial.transparent = e;
                 });
-                guiBodyMaterials.add(controls, 'visible').onChange(function(e) {
+                guiBodyMaterials.add(controls, 'visible').onChange(function(e)
+                {
                     BodyPhongMaterial.visible = e;
                 });
-                guiBodyMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                guiBodyMaterials.addColor(controls, 'ambient').onChange(function(e)
+                {
                     BodyPhongMaterial.ambient = new THREE.Color(e);
                 });
-                guiBodyMaterials.add(controls, 'color').onChange(function(e) {
+                guiBodyMaterials.add(controls, 'color').onChange(function(e)
+                {
                     BodyPhongMaterial.color = new THREE.Color(e);
                 });
-                guiBodyMaterials.add(controls, 'emissive').onChange(function(e) {
+                guiBodyMaterials.add(controls, 'emissive').onChange(function(e)
+                {
                     BodyPhongMaterial.emissive = new THREE.Color(e);
                 });
-                guiBodyMaterials.add(controls, 'specular').onChange(function(e) {
+                guiBodyMaterials.add(controls, 'specular').onChange(function(e)
+                {
                     BodyPhongMaterial.specular = new THREE.Color(e);
                 });
-                guiBodyMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                guiBodyMaterials.add(controls, 'shininess', 0, 200).onChange(function(e)
+                {
                     BodyPhongMaterial.shininess = e;
                 });
                 
-                guiBodyMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                guiBodyMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e)
+                {
                     switch (e) {
                         case "front":
                             BodyPhongMaterial.side = THREE.FrontSide;
@@ -891,32 +845,41 @@
                 
                 
                 
-                guiUpperLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e)
+                {
                     UpperLegPhongMaterial.opacity = e;
                 });
-                guiUpperLegMaterials.add(controls, 'transparent').onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'transparent').onChange(function(e)
+                {
                     UpperLegPhongMaterial.transparent = e;
                 });
-                guiUpperLegMaterials.add(controls, 'visible').onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'visible').onChange(function(e)
+                {
                     UpperLegPhongMaterial.visible = e;
                 });
-                guiUpperLegMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                guiUpperLegMaterials.addColor(controls, 'ambient').onChange(function(e)
+                {
                     UpperLegPhongMaterial.ambient = new THREE.Color(e);
                 });
-                guiUpperLegMaterials.add(controls, 'color').onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'color').onChange(function(e)
+                {
                     UpperLegPhongMaterial.color = new THREE.Color(e);
                 });
-                guiUpperLegMaterials.add(controls, 'emissive').onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'emissive').onChange(function(e)
+                {
                     UpperLegPhongMaterial.emissive = new THREE.Color(e);
                 });
-                guiUpperLegMaterials.add(controls, 'specular').onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'specular').onChange(function(e)
+                {
                     UpperLegPhongMaterial.specular = new THREE.Color(e);
                 });
-                guiUpperLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e)
+                {
                     UpperLegPhongMaterial.shininess = e;
                 });
                 
-                guiUpperLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                guiUpperLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e)
+                {
                     switch (e) {
                         case "front":
                             UpperLegPhongMaterial.side = THREE.FrontSide;
@@ -931,32 +894,41 @@
                     UpperLegPhongMaterial.needsUpdate = true;
                 });
                 
-                guiLowerLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'opacity', 0, 1).onChange(function(e)
+                {
                     LowerLegPhongMaterial.opacity = e;
                 });
-                guiLowerLegMaterials.add(controls, 'transparent').onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'transparent').onChange(function(e)
+                {
                     LowerLegPhongMaterial.transparent = e;
                 });
-                guiLowerLegMaterials.add(controls, 'visible').onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'visible').onChange(function(e)
+                {
                     LowerLegPhongMaterial.visible = e;
                 });
-                guiLowerLegMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                guiLowerLegMaterials.addColor(controls, 'ambient').onChange(function(e)
+                {
                     LowerLegPhongMaterial.ambient = new THREE.Color(e);
                 });
-                guiLowerLegMaterials.add(controls, 'color').onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'color').onChange(function(e)
+                {
                     LowerLegPhongMaterial.color = new THREE.Color(e);
                 });
-                guiLowerLegMaterials.add(controls, 'emissive').onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'emissive').onChange(function(e)
+                {
                     LowerLegPhongMaterial.emissive = new THREE.Color(e);
                 });
-                guiLowerLegMaterials.add(controls, 'specular').onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'specular').onChange(function(e)
+                {
                     LowerLegPhongMaterial.specular = new THREE.Color(e);
                 });
-                guiLowerLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'shininess', 0, 200).onChange(function(e)
+                {
                     LowerLegPhongMaterial.shininess = e;
                 });
                 
-                guiLowerLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                guiLowerLegMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e)
+                {
                     switch (e) {
                         case "front":
                             LowerLegPhongMaterial.side = THREE.FrontSide;
@@ -972,32 +944,41 @@
                 });
                 
                 
-                guiJointMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                guiJointMaterials.add(controls, 'opacity', 0, 1).onChange(function(e)
+                {
                     JointPhongMaterial.opacity = e;
                 });
-                guiJointMaterials.add(controls, 'transparent').onChange(function(e) {
+                guiJointMaterials.add(controls, 'transparent').onChange(function(e)
+                {
                     JointPhongMaterial.transparent = e;
                 });
-                guiJointMaterials.add(controls, 'visible').onChange(function(e) {
+                guiJointMaterials.add(controls, 'visible').onChange(function(e)
+                {
                     JointPhongMaterial.visible = e;
                 });
-                guiJointMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                guiJointMaterials.addColor(controls, 'ambient').onChange(function(e)
+                {
                     JointPhongMaterial.ambient = new THREE.Color(e);
                 });
-                guiJointMaterials.add(controls, 'color').onChange(function(e) {
+                guiJointMaterials.add(controls, 'color').onChange(function(e)
+                {
                     JointPhongMaterial.color = new THREE.Color(e);
                 });
-                guiJointMaterials.add(controls, 'emissive').onChange(function(e) {
+                guiJointMaterials.add(controls, 'emissive').onChange(function(e)
+                {
                     JointPhongMaterial.emissive = new THREE.Color(e);
                 });
-                guiJointMaterials.add(controls, 'specular').onChange(function(e) {
+                guiJointMaterials.add(controls, 'specular').onChange(function(e)
+                {
                     JointPhongMaterial.specular = new THREE.Color(e);
                 });
-                guiJointMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                guiJointMaterials.add(controls, 'shininess', 0, 200).onChange(function(e)
+                {
                     JointPhongMaterial.shininess = e;
                 });
                 
-                guiJointMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                guiJointMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e)
+                {
                     switch (e) {
                         case "front":
                             JointPhongMaterial.side = THREE.FrontSide;
@@ -1011,32 +992,41 @@
                     }
                     JointPhongMaterial.needsUpdate = true;
                 });
-                guiArmMaterials.add(controls, 'opacity', 0, 1).onChange(function(e) {
+                guiArmMaterials.add(controls, 'opacity', 0, 1).onChange(function(e)
+                {
                     ArmPhongMaterial.opacity = e;
                 });
-                guiArmMaterials.add(controls, 'transparent').onChange(function(e) {
+                guiArmMaterials.add(controls, 'transparent').onChange(function(e)
+                {
                     ArmPhongMaterial.transparent = e;
                 });
-                guiArmMaterials.add(controls, 'visible').onChange(function(e) {
+                guiArmMaterials.add(controls, 'visible').onChange(function(e)
+                {
                     ArmPhongMaterial.visible = e;
                 });
-                guiArmMaterials.addColor(controls, 'ambient').onChange(function(e) {
+                guiArmMaterials.addColor(controls, 'ambient').onChange(function(e)
+                {
                     ArmPhongMaterial.ambient = new THREE.Color(e);
                 });
-                guiArmMaterials.add(controls, 'color').onChange(function(e) {
+                guiArmMaterials.add(controls, 'color').onChange(function(e)
+                {
                     ArmPhongMaterial.color = new THREE.Color(e);
                 });
-                guiArmMaterials.add(controls, 'emissive').onChange(function(e) {
+                guiArmMaterials.add(controls, 'emissive').onChange(function(e)
+                {
                     ArmPhongMaterial.emissive = new THREE.Color(e);
                 });
-                guiArmMaterials.add(controls, 'specular').onChange(function(e) {
+                guiArmMaterials.add(controls, 'specular').onChange(function(e)
+                {
                     ArmPhongMaterial.specular = new THREE.Color(e);
                 });
-                guiArmMaterials.add(controls, 'shininess', 0, 200).onChange(function(e) {
+                guiArmMaterials.add(controls, 'shininess', 0, 200).onChange(function(e)
+                {
                     ArmPhongMaterial.shininess = e;
                 });
                 
-                guiArmMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e) {
+                guiArmMaterials.add(controls, 'side', ["front", "back", "double"]).onChange(function(e)
+                {
                     switch (e) {
                         case "front":
                             ArmPhongMaterial.side = THREE.FrontSide;
@@ -1051,95 +1041,84 @@
                     ArmPhongMaterial.needsUpdate = true;
                 });
      
-                function render() {
-                 stats.update();
-                 var clock = new THREE.Clock();
-                 var delta = clock.getDelta();
-                 controlcamera.update(delta);
-                 
-                 
+                function render()
+                {
+                    stats.update();
+                    var clock = new THREE.Clock();
+                    var delta = clock.getDelta();
+                    controlcamera.update(delta);
                 
                     // render using requestAnimationFrame
                     requestAnimationFrame(render);
                     renderer.render(scene, camera);
                 }
-                
-                
-                
-               
-                
-                
-                
-                
+
     
-                var keyboard = new function() {
-                
-                
+                var keyboard = new function()
+                {
                 //turn left
-                keypress.simple_combo("left", function(){
-                   
-                   //robotGroup.position.x -=1;
-                   OverallGroup.rotation.y -=0.5;
-                 
-        
+                keypress.simple_combo("left", function()
+                {
+                    OverallGroup.rotation.y -=0.5;
                 });
                 
                 
                 //turn right
-                keypress.simple_combo("right", function(){
-                
-                   //robotGroup.position.x +=1;
-                   OverallGroup.rotation.y +=0.5;
-               
+                keypress.simple_combo("right", function()
+                {
+                    OverallGroup.rotation.y +=0.5;
                 });
                 
-                keypress.simple_combo("up", function(){
+                keypress.simple_combo("up", function()
+                {
                     
                  OverallGroup.rotation.y +=0.5;  
                  OverallGroup.position.x += 1;
-                 
-        
+
                 });
                 
-                keypress.simple_combo("down", function(){
+                keypress.simple_combo("down", function()
+                {
                  
                    OverallGroup.rotation.y -=0.5;
                    OverallGroup.position.x -= 1;
-                    
+
                 });
                 
                 
                 //a jump function
-                keypress.simple_combo("space", function(){
-                    
+                keypress.simple_combo("space", function()
+                {
                     //robotGroup.position.y +=1;
-                    
                 });
                 
                 
                 //corekeyboard functions
                 
                 //up
-                keypress.simple_combo("w", function (){
+                keypress.simple_combo("w", function ()
+                {
                     camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
                     camera.position.z -= 0.5 * Math.cos(camera.rotation.y);
                 });
                 
                 
-                keypress.simple_combo("a", function(){
+                keypress.simple_combo("a", function()
+                {
                     camera.rotation.y += 0.02;
                 });
                 
                  //down
                
-                keypress.simple_combo("s", function() {
+                keypress.simple_combo("s", function()
+                {
                     camera.position.x += 0.1 * Math.sin(camera.rotation.y);
                     camera.position.z += 0.1 * Math.cos(camera.rotation.y);
                 });
                 
                 
-                keypress.simple_combo("d", function() {
-                    
+                keypress.simple_combo("d", function()
+                {
                       //right
                      camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
                      camera.position.z -= 0.5 * Math.cos(camera.position.y);
@@ -1149,7 +1128,8 @@
                 
                 
                 //zoom out
-                keypress.simple_combo("q", function() {
+                keypress.simple_combo("q", function()
+                {
                          //left
                 camera.position.x += 0.5 * Math.sin(camera.rotation.y);
                 camera.position.y += 0.5 * Math.cos(camera.rotation.x);
@@ -1157,7 +1137,8 @@
                    
                 });
                 
-                keypress.simple_combo("e", function() {
+                keypress.simple_combo("e", function()
+                {
                     
                 camera.position.x -= 0.5 * Math.sin(camera.rotation.y);
                 camera.position.y -= 0.5 * Math.cos(camera.rotation.x);
@@ -1167,14 +1148,9 @@
                 
              
     }
-    
-    
-                var mouse = new function() {
-                    
-                };
            
-                function initStats() {
-
+                function initStats()
+                {
                     var stats = new Stats();
 
                     stats.setMode(0); // 0: fps, 1: ms
